@@ -1,0 +1,79 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <style>
+            p {
+                margin-left: 20px;
+            }
+            #container {
+                width: fit-content;
+                padding: 20px;
+            }
+            label {
+                display: inline-block;
+                width: 40px;
+                margin-right: 15px;
+                text-align: right;
+            }
+            input {
+                width: 100px;
+            }
+            #bt {
+                margin-top: 20px;
+                text-align: center;
+            }
+            /*addClass, removeClass*/
+            .red {color: red}
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            /*ajax가 true이면 ajax로 데이터 전송, false이면 form으로 데이터 전송*/
+            var ajax=true;
+            function login() {
+                if(!ajax) {
+                    document.loginform.submit();
+                    return;
+                }
+                /*/ajax/login은 ajax로 데이터 보낼때의 주소-*/
+                var url='/ajax/login';
+                var data={'uid':$('#uid').val(), 'upwd':$('#upwd').val()};
+                $.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'html',
+                    data: data,
+                    success: function(data){
+                        /*server로 부터 return된 data를 받아서 아래의 코드를 실행*/
+                        if (data=='로그인 실패') {
+                            
+                            /*data.css('color', 'red'); : .css는 jquery 객체에만 사용 가능*/
+                            $('#result').addClass('red');
+                            $('#result').html(' : '+data);
+                            alert(data);
+                        }
+                        else {
+                            /*$('#result').html(' : '+data);*/
+                            alert('로그인 성공');
+                            location.href='https://www.google.com'
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert(error);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <p>로그인 <span id='result'></span></p>
+        <!--/user/login은 form으로 데이터 보낼때의 주소-->
+        <form name='loginform' action='/user/flogin' method='post'>
+            <div id='container'>
+                <div><label for='uid'>ID</label><input type='text' name='uid' id='uid'></div>
+                <div><label for='upwd'>PWD</label><input type='password' name='upwd' id='upwd'></div>
+                <div id='bt'><button type='button' onclick='login();'>로그인</button></div>
+            </div>
+        </form>
+    </body>
+</html>

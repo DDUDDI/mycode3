@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <title>Jinja2 템플릿 엔진 테스트</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <style>
+            body {
+                margin: 20px;
+            }
+            div {
+                width: fit-content
+            }
+            h1 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <!--jinja2의 for문-->
+            <p>{{dan}}단</p>
+            {% for a in res %}
+            {{a}}<br>
+            {% endfor %}
+        </div>
+    </body>
+</html>

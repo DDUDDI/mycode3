@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>CRUD</title>
+        <style>
+            h3, #md {
+                margin-left: 10px
+            }
+            table tr, th, td {
+                padding: 10px;
+            }
+            button {
+                margin-top: 10px;
+            }
+        </style>
+         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <h3>사원 상세 정보</h3>
+            <form>
+                <table>
+                    <tr>
+                        <th>번호</th>
+                        <td>{{emp.empno}}</td>
+                    </tr>
+                    <tr>
+                        <th>이름</th>
+                        <td>{{emp.ename}}</td>
+                    </tr>
+                    <tr>
+                        <th>부서</th>
+                        <td>{{emp.dept}}</td>
+                    </tr>
+                    <tr>
+                        <th>급여</th>
+                        <td>{{emp.sal}}</td>
+                    </tr>
+                    <tr>
+                        <th>지역</th>
+                        <td>{{emp.loc}}</td>
+                    </tr>
+                    <tr>
+                        <th>전화</th>
+                        <td>{{emp.tel}}</td>
+                    </tr>
+                    <tr>
+                        <th>메일</th>
+                        <td>{{emp.email}}</td>
+                    </tr>
+                </table>
+                <button id='md' type='button' onclick="location.href='/emp/edit/{{emp.empno}}'">수정</button>       
+                <button type='button' onclick="location.href='/emp/delete/{{emp.empno}}'">삭제</button>
+                <button type='button' onclick="location.href='/emp/list'">목록보기</button> 
+            </form>
+        </div>
+    </body>
+</html>
+
+<!--수정 누르면 emp/eidt으로 넘어가고
+누구를 수정할지 번호 넣음-->

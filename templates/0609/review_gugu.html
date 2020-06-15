@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function request_gugu() {
+                var dan=parseInt($('#dan').val());
+                str = '<p>';
+                for(var i=1;i<=9;i++) {
+                    str+=dan+' * '+i+' = '+(dan*i)+'<br>';
+                }
+                str+='</p>';
+                /*.html: 변수에 있는 html을 해석해라*/
+                $('#out').html(str)
+            }
+        </script>
+        <style>
+            #div1, #div2 {
+                display: inline-block;
+                border: 1px solid black;
+                width: fit-content;
+                margin: 20px; padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='div1'>
+            <p><a href='http://127.0.0.1:5000/gugu/2'>2단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/3'>3단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/4'>4단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/5'>5단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/6'>6단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/7'>7단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/8'>8단</a></p>
+            <p><a href='http://127.0.0.1:5000/gugu/9'>9단</a></p>
+        </div>
+        <div id='div2'>
+            <div><output id='out'></output></div>
+            <div><input type='range' id='dan' min='2' max='9' value='2'
+                oninput="$('#res').text(this.value);"><span id='res'></span></div>          
+            <div><button type='button' onclick='request_gugu();'>구구단 요청</button></div>
+        </div>
+    </body>
+</html>

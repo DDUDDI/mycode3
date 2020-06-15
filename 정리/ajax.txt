@@ -1,0 +1,15 @@
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            어떤 서버로 무슨 데이터를 전달하는지 알아야함
+            jason: javascript에서 {key:value} 형식으로 사용하는 것*/
+            $.ajax({
+                url: '',    /*요청할 서버 주소*/
+                method: '',     /*get or post*/
+                dataType: 'html',   /*응답 받을 데이터의 유형(text, html, xml, jason)*/
+                data: '',   /*parameter로 보낼 데이터, 자주 안쓸 예정*/
+                success: function(data){    /*요청을 성공했으면(200) sucess가 실행됨, key:function도 가능*/
+                },
+                error: function(request, status, error){    /*요청을 실패했으면(400, 400) error가 실행됨*/
+                }
+            });
+        </script>

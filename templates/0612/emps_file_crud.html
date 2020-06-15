@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>CRUD</title>
+        <style>
+            h3 {
+                margin-left: 10px;
+            }
+            table tr, th, td {
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <!--사원 정보 링크를 클릭하면 사원의 상세 정보가 출력되도록 하라-->
+        <!--/emp/info/enum에서 enum은 server에서 받아옴-->
+        <div>
+        <h3>사원정보 리스트</h3>
+            <table>
+                {% for emp in emplist %}
+                <tr>
+                    <th><a href='/emp/info/{{emp.empno}}'>{{emp.empno}}</a></th>
+                    <td>{{emp.ename}}</td>
+                    <td>{{emp.dept}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

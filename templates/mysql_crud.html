@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <title>MySQL_CRUD</title>
+    </head>
+    <style>
+        table tr, th, td {
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+    <body>
+        <table>
+            <tr>
+                <th>empno</th>
+                <th>ename</th>
+                <th>salary</th>
+                <th>deptno</th>
+            </tr>
+            {% for emp in emplist %}
+            <tr>
+                <td>{{emp['empno']}}</td>
+                <td>{{emp['ename']}}</td>
+                <td>{{emp['salary']}}</td>
+                <td>{{emp['deptno']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

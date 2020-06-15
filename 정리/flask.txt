@@ -1,0 +1,24 @@
+	
+	Flaks: Python web framework(경량) (cf. Django: 대형 웹사이트 개발용)
+
+	- favicon: 사이트 바로가기 아이콘
+
+	- 가상환경(Virtual Environment)
+		- 구축: 디렉토리 생성 > 이동 > 가상환경 생성 명령(python -m venv 이름(교재: flasky))
+		- 모든 모듈이 가상환경 내부에서만 돌아감
+		- 가상환경은 실행했을 때만 사용 가능
+
+		- 활성화: venv\Scripts\activate
+		- 비활성화: deactivate
+		- 업그레이드: python -m pip install --upgrade pip
+		- 설치: pip install flask	
+		- python shell에서 import flask 확인
+
+
+	- html 파일 읽어오기
+		- templates 폴더 안에 html 파일 넣기
+
+	- python file 실행하기
+		- set FLASK_APP=파일명.py
+		- set FLASK_DEBUG=1
+		- flask run

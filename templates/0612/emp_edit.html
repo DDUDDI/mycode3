@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>CRUD</title>
+        <style>
+            h3, #reset {
+                margin-left: 10px;
+            }
+            table tr, th, td {
+                padding: 10px;
+            }
+            button {
+                margin-top: 10px;
+            }
+        </style>
+         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+         <script>
+             function update() {
+                 document.getElementById('empinfo').submit();
+             }
+         </script>
+    </head>
+    <body>
+        <div>
+            <h3>사원 정보 수정</h3>
+                <form id='empinfo' action='/emp/update' method='post'>    
+                <table>
+                    <tr>
+                        <th>번호</th>
+                        <td><input type='number' name='empno' value='{{emp.empno}}' readonly></td>
+                    </tr>
+                    <tr>
+                        <th>이름</th>
+                        <td><input type='text' name='ename' value='{{emp.ename}}' readonly></td>
+                    </tr>
+                    <tr>
+                        <th>부서</th>
+                        <td><input type='text' name='dept' value='{{emp.dept}}'></td>
+                    </tr>
+                    <tr>
+                        <th>급여</th>
+                        <td><input type='text' name='sal' value='{{emp.sal}}'></td>
+                    </tr>
+                    <tr>
+                        <th>지역</th>
+                        <td><input type='text' name='loc' value='{{emp.loc}}'></td>
+                    </tr>
+                    <tr>
+                        <th>전화</th>
+                        <td><input type='tel' name='tel' value='{{emp.tel}}' readonly></td>
+                    </tr>
+                    <tr>
+                        <th>메일</th>
+                        <td><input type='email' name='email' value='{{emp.email}}' readonly></td>
+                    </tr>
+                </table>
+                <button id='reset' type='reset'>취소</button>
+                <button type='submit' onclick='update();'>저장</button>
+                <button type='button' onclick="location.href='/emp/list'">목록보기</button>      
+            </form>
+        <div>
+    </body>
+</html>
+
+<!--수정 누르면 emp/eidt으로 넘어가고
+누구를 수정할지 번호 넣음-->

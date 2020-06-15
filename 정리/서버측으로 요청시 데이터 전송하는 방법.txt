@@ -1,0 +1,15 @@
+	
+	[서버측으로 요청시 데이터 전송하는 방법]
+	- REST 서비스 	예) /gugu/5
+	- Query String	예) /gugu?dan=5
+	- 링크의 href(QS)	예) <a href='/gugu/5'>구구단 보기</a>	
+	- form
+	- jQuery AJAX 활용 비동기 요청
+	- 그 외 자바스크립트를 이용한 요청	예) location href
+		1) form.submit() (자바스크립트로 form 활용)
+		2) location.href='/gg?dan=5'; >> rest 서비스 or query string
+
+
+	Method
+	- Post/Get: form, AJAX
+	- Get: 그 외 나머지

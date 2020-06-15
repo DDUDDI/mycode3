@@ -1,0 +1,7 @@
+	
+	static 폴더에 이미지 넣기
+	-> 바로 경로를 통해 접속 가능(앱을 거치지 않고)
+
+	1) <img src={{url_for('static', filename='lotteworld2.jpg')}}>
+	- jinja2를 통해 호출
+	2) <img src='/static/heart.jpg'>

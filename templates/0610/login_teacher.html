@@ -1,0 +1,42 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            /*ajax가 true이면 ajax로 데이터 전송, false이면 form으로 데이터 전송*/
+            var ajax=false;
+            function login() {
+                if(!ajax) {
+                    document.loginform.submit();
+                    return;
+                }
+                /*/ajax/login은 ajax로 데이터 보낼때의 주소-*/
+                var url='/ajax/login';
+                var data={'uid':$('#uid').val(), 'upwd':$('#upwd').val()};
+                $.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'html',
+                    data: data,
+                    success: function(data){
+                        /*server로 부터 return된 data를 받아서 아래의 코드를 실행*/
+                        $('#result').html(data);
+                    },
+                    error: function(request, status, error){
+                        alert(error);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <p id='result'>로그인</p>
+        <!--/user/login은 form으로 데이터 보낼때의 주소-->
+        <form name='loginform' action='/user/login' method='post'>
+            <input type='text' name='uid' id='uid' value='blake'>
+            <input type='password' name='upwd' id='upwd' value='1234'>
+            <button type='button' onclick='login();'>로그인</button>
+        </form>
+    </body>
+</html>

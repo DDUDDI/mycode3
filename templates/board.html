@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <tile>Board</tile>
+    </head>
+    <body>
+        <table>
+            {% for r in rows %}
+            <tr>
+                <td>{{r['num']}}</td>
+                <td>{{r['title']}}</td>
+                <td>{{r['author']}}</td>
+                <td>{{r['wdate']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

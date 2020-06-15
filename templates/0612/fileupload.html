@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>File Upload example</title>
+    </head>
+    <body>
+        <h3>파일 업로드 테스트</h3>
+        <!--file upload 필수 요소
+        method='post', enctype='multipart/form-data' type='file'-->
+        <form action='/upload' method='post' enctype='multipart/form-data'>
+            <input type='file' name='file1'>
+            <input type='submit'>
+        </form>
+    </body>
+</html>

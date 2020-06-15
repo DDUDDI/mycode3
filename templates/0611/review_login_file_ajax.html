@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <title>login_ajax</title>
+        <style>
+            .red {color: red;}
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function login() {
+                var url='/ajax/login';
+                var data={'uid':$('#uid').val(), 'upwd':$('#upwd').val()};
+                $.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'html',
+                    data: data,
+                    success: function(data){
+                        if (data=='로그인 실패') {
+                            /*data.css('color', 'red'); : .css는 jquery 객체에만 사용 가능*/
+                            $('#result').addClass('red');
+                            $('#result').html(' : '+data);
+                            alert(data);
+                        }
+                        else {
+                            $('#result').html(' : '+data);
+                            alert(data);
+                            location.href='https://www.google.com'
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert(error);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <p>로그인 <span id='result'></span></p>
+        <form name='loginform' action='/user/flogin' method='post'>
+            <div id='container'>
+                <div><label for='uid'>ID</label><input type='text' name='uid' id='uid'></div>
+                <div><label for='upwd'>PWD</label><input type='password' name='upwd' id='upwd'></div>
+                <div id='bt'><button type='button' onclick='login();'>로그인</button></div>
+            </div>
+        </form>
+    </body>
+</html>
+</html>

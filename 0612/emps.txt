@@ -1,0 +1,4 @@
+1 Kimjihee 10 8000 Incheon 010-8285-2415 ji_hee@khu.ac.kr 
+2 Kangseungmo 40 8000 Chungnam 010-9214-9196 xgz9421@naver.com 
+3 Songhaseung 10 6500 Gyeonggi 010-3194-4875 hon1415@naver.com 
+4 Jungsungwook 10 6500 Gyeonggi 010-4361-8876 jungsw06310@gmail.com
