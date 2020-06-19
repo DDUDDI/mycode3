@@ -1,0 +1,87 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset='utf8'>
+        <style>
+            .login-page {
+                width: 360px;
+                padding: 8% 0 0;
+                margin: 0 auto;
+            }
+            .form {
+                position: relative;
+                z-index: 1;
+                background-color: #FFFFFF;
+                max-width: 360px;
+                margin: 0 auto 100px;
+                padding: 45px;
+                text-align: center;
+                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            }
+            .form input {
+                outline: 0;
+                background-color: #f2f2f2;
+                width: 100%;
+                border: 0;
+                margin: 0 0 15px;
+                padding: 15px;
+                box-sizing: border-box;
+                font-size: 14px; 
+            }
+            .form button {
+                outline: 0;
+                background-color: #4CAF50;
+                width: 100%;
+                border: 0;
+                padding: 15px;
+                color: #FFFFFF;
+                font-size: 14px;
+            }
+            .form button:hover, .form button:active, .form button:focus {
+                background-color: #43A047;
+            } 
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script> 
+            function login() {
+                var url='/user/login';
+                var data={'uid':$('#uid').val(), 'upwd':$('#upwd').val()};
+                $.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'text',
+                    data: data,
+                    success: function(data){
+                        js_obj=JSON.parse(data);
+                        if (js_obj.ok) {
+                            alert('로그인 성공');
+                            location.href='/bbs/page/1';
+                        }
+                        else {
+                            alert('아이디와 비밀번호를 확인해주세요')
+                            location.href='/'
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert(error);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class='login-page'>
+            <div class='form'>
+                <form class='register-form' name='loginform' action='/user/login' method='post'>
+                    <input type='text' name='uid' id='uid' placeholder='username'>
+                    <input type='password' name='upwd' id='upwd' placeholder='password'>
+                    <button id='bt' type='button' onclick='login();'>LOGIN</button>
+                </form>
+            <div>
+        </div>
+        <!--
+        <img src={{url_for('static', filename='lotteworld2.jpg')}}>
+        <img src='/static/lotteworld2.jpg'>
+        -->
+    </body>
+</html>

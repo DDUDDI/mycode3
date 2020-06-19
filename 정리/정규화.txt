@@ -1,0 +1,36 @@
+
+	[데이터 입출력 구현]
+	Database Design, Stored Procedures
+	DB 설계, 저장 프로시저 작성(MySQL 프로그래밍 언어)
+	정규화(Normalization), ERD(Entity Relationship Diagram)
+	ERD --> Table 생성: Forward Engineering
+
+	데이터베이스의 무결성과 일관성을 유지하기 위해서 설계시 지켜야할 과정
+	제 1정규화
+	제 2정규화
+	제 3정규화
+
+	관계 설정: ERD로 표현
+	Entity = Object
+	Attributes
+	**Stored Procedures
+
+	SQL 데이터 입출력: a 쿼리에서 가져온 데이터를 b 쿼리에서 사용하고
+	그 결과를 다시 c 쿼리에게 전달하여 값을 산출하려면? Stored Procedures가 필요함
+	Python(App) --> sql query --> MySQL 
+
+
+
+	게시판
+	글번호, 제목, 작성자, 작성일, 히트수, 내용, 첨부파일, 파일명, 파일크기
+
+
+	제1정규화: 각 컬럼의 값은 원자성을 가져야 함 --> 복수의 값을 가진 속성은 별도의 Entity로 분리
+	예) 회원정보 테이블: 회원번호, 이름, 취미(다수개)
+
+	제2정규화: 완전 함수적 종속성
+	- 다수개의 PK가 있을 때 각 일반 속성은 모든 PK에 완전 함수적 종속성을 만족해야 함
+	--> 다수개의 PK가 있을 때 그 중 한개의 PK에만 종속되는 경우 제거
+	예) class, student, 학생수, 학생 이름, 성적, 좌석수
+
+	제3정규화: 일반 속성끼리 종속 관계가 있으면 다른 Entity로 분리

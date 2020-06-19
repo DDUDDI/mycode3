@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Board</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            /*폼 유효성 검사*/
+            function checkIt(f) {
+                if(f.autohr.value=!'' && f.title.value!='' && f.content.value!='')
+                    return true;
+                else return false;
+            }
+        </script>
+         <style>
+            main {
+                margin: 0 auto;
+                width: fit-content;
+                padding: 10px;
+            }
+            h1 {
+                text-align: center;
+            }
+            table {
+                border-spacing: 0px 10px;
+                border-collapse: separate;
+                width: 700px;
+                text-align: left;
+            }
+            td{ 
+                padding: 7px 20px;
+                border: 1px solid rgb(197, 197, 197);
+                border-left: none;
+                border-right: none;
+                
+            }
+            tr:nth-child(1) {
+                height: 60px;
+            }
+            tr:nth-child(2) {
+                background-color: rgb(211, 225, 255);
+            }
+            tr:nth-child(3) td {
+                height: 400px;
+                vertical-align: text-top;
+                border: 1px solid rgb(197, 197, 197);
+                overflow: auto;
+            }
+            input, textarea {
+                width: 100%;
+                height: 100%;
+            }
+            input:focus, textarea:focus {
+                outline: none
+            }
+            button {
+                margin: 3px;
+            }
+            button#conf {
+                float: right;
+            }
+            button#canc {
+                float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>새글 쓰기</h1>
+            <form name='writeform' method='post' action='/bbs/insert' enctype='multipart/form-data' onsubmit='return checkIt(this)'>
+                <table>
+                    <colgroup>
+                        <col style='width: 65%;'>
+                        <col style='width: 35%;'>
+                    </colgroup>
+                    <tr>
+                        <td><input type='text' id='title' name='title' placeholder='게시글 제목을 입력하세요' required></td>
+                        <td><input type='text' id='author' name='author' placeholder='작성자를 입력하세요'></td> <!--session login을 위해 required 제거-->
+                    </tr>
+                    <tr>
+                        <td colspan='2'><input type='file' name='file1'></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'><textarea id='content' name='content'></textarea></td>
+                    </tr>
+                </table>
+                <button id='conf' type='submit'>확 인</button>
+                <button id='canc' type='reset' onclick="location.href='/bbs/page/1'">목록보기</button>
+            </form>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' type='text/css' href='board_content.css'>
+        <title>Board</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script> 
+            function delete_content() {
+                response = window.confirm('정말 삭제하시겠습니까?');
+                if (response) {
+                    location.href='/bbs/delete/{{row.num}}';
+                }
+                else {
+                    alert('취소했습니다.');
+                }
+            }
+        </script>
+        <style>
+            main {
+                margin: 0 auto;
+                width: fit-content;
+                padding: 10px;
+            }
+            h1 {
+                text-align: center;
+            }
+            table {
+                border-spacing: 0px 10px;
+                border-collapse: separate;
+                width: 700px;
+                text-align: left;
+            }
+            td{
+                padding: 7px 20px;
+                border: 1px solid rgb(197, 197, 197);
+                border-left: none;
+                border-right: none;
+            }
+            tr:nth-child(1) {
+                height: 60px;
+            }
+            tr:nth-child(1)>td:nth-child(2) {
+                font-size: 120%;
+                font-weight: bold;
+                text-align: left;
+            }
+            tr:nth-child(2)>td {
+                background-color: rgb(211, 225, 255);
+                border: none;
+            }
+            tr:nth-child(4)>td {
+                height: 400px;
+                vertical-align: text-top;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border: 1px solid rgb(197, 197, 197);
+                overflow:auto /* visible, hidden, scroll, auto */
+            }
+            button {
+                margin: 3px;
+            }
+            button#list {
+                float: left;
+            }
+            button#modify, button#delete {
+                float: right;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>자유 게시판</h1>
+            <form>
+                <table>
+                    <colgroup>
+                        <col style='width: 10%;'>
+                        <col style='width: 65%;'>
+                        <col style='width: 25%;'>
+                    </colgroup>
+                    <tr>
+                        <td>{{row['num']}}</td>
+                        <td>{{row['title']}}</td>
+                        <td>작성자 : {{row['author']}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">작성일 : {{row['wdate']}}</td>
+                        <td>조회수 : {{row['hitcnt']}}</td>
+                    </tr>
+                    <tr>
+                        <!--다운로드 경로가 보이는 방법
+                        <td colspan='3'>첨부파일 : <a href="/static/attach/{{filename}}" download>{{filename if filename else ''}}</a></td>
+                        -->
+                        <!--보안을 위해 send_file를 사용하는 것이 좋음-->
+                        <td colspan='3'>첨부파일 : <a href='/bbs/download/{{filename}}'>{{filename}}</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan='3'>
+                        <!--
+                            {% for ct in content_list%}
+                            {{ct}}<br>
+                            {% endfor %}
+                        -->
+                        {{row['content']|safe}}
+                        <!--jinja2 safe: renders the value without applying escaping-->
+                        </td>
+                    </tr>
+                </table>
+                <button id='list' type='button' onclick="location.href='/bbs/page/1'">목록보기</button>
+                <button id='delete' type='button' onclick='delete_content();'>삭제</button>
+                <button id='modify' type='button' onclick="location.href='/bbs/edit/{{row.num}}'">수정</button>
+            </form>
+        </main>
+    </body>
+</html>

@@ -1,19 +1,167 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset='utf8'>
-        <tile>Board</tile>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' type='text/css' href='board.css'>
+        <title>Board</title>
+        <style>
+            .login {
+                float: right;
+                margin: 5px;
+            }
+            main {
+                margin: 0 auto;
+                width: fit-content;
+                padding: 10px;
+                text-align: center;
+            }
+            table {
+                margin: 10px;
+                border-spacing: 0px;
+                border-collapse: collapse;
+                width: 900px;
+
+            }
+            th, td {
+                padding: 7px;
+                border: 1px solid rgb(197, 197, 197);
+                border-left: none;
+                border-right: none;
+                
+            }
+            th {
+                background-color: rgb(211, 225, 255);
+                font-size: 120%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+            }
+            a {
+                text-decoration: none;
+                color: rgb(67, 67, 214)
+            }
+            tr:not(:nth-child(1)):hover {
+                background-color: rgba(247, 247, 247, 0.993);
+            }
+            #writefunc {
+                float: right;
+                margin-bottom: 10px;
+            }
+            #page {
+                clear: both;
+                margin-bottom: 10px;
+            }
+            #page a {
+                color: black;
+                margin: 5px;
+            }
+            #page a:hover {
+                text-decoration: underline;
+            }
+            #page a:active {
+                background-color: rgb(211, 225, 255);
+            }
+            #selectfunc {
+                clear: both;
+                width: 100%;
+                height: 60px;
+                line-height: 60px;
+                background-color: rgba(247, 247, 247, 0.993);
+            }
+            .select {
+                margin: 0px; padding: 0px;
+                vertical-align: middle;
+            }
+            .select:focus {
+                outline: none;
+            }
+            input.select {
+                height: 30px;
+                width: 200px;
+            }
+            select.select, button.select {
+                height: 34px;
+                width: 80px;
+            }
+            button.select {
+                background-color: rgb(211, 225, 255);
+                border: 1px solid gray;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function logout() {
+                ok = confirm('로그아웃 하시겠습니까?');
+                if (ok) {
+                    alert('정상적으로 로그아웃되었습니다.')
+                    location.href='/user/logout';
+                }
+                else {
+                    aler('취소했습니다.')
+                }
+            }
+        </script> 
     </head>
     <body>
-        <table>
-            {% for r in rows %}
-            <tr>
-                <td>{{r['num']}}</td>
-                <td>{{r['title']}}</td>
-                <td>{{r['author']}}</td>
-                <td>{{r['wdate']}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <header>
+            <button class='login' type='button' onclick='logout();'>Logout</button>
+            <button class='login' onclick="location.href='/'">Login</button>
+        </header>
+        <main>
+            <h1>자유 게시판</h1>   
+                <table>
+                    <colgroup>
+                        <col style='width: 7%;'>
+                        <col style='width: 30%;'>
+                        <col style='width: 18%;'>
+                        <col style='width: 19%;'>
+                        <col style='width: 11%;'>
+                        <col style='width: 15%;'>
+                        
+                    </colgroup>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                        <th>첨부파일</th>
+                    </tr>
+                    {% for r in rows %}
+                    <tr>
+                        <td id='num'>{{r['num']}}</td>
+                        <td id='title'><a href="/bbs/read/{{r['num']}}">{{r['title']}}</a></td>
+                        <td id='author'>{{r['author']}}</td>
+                        <td id='wdate'>{{r['wdate']}}</td>
+                        <td id='hitcnt'>{{r['hitcnt']}}</td>
+                        <td id='fname'>{{r['fname'] if r['fname'] else ''}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            <div id='writefunc'><button type='button' onclick="location.href='/bbs/write'">글쓰기</button></div>
+            <div id='page'>
+                <a href='/bbs/page/1'>1</a>
+                <a href='/bbs/page/2'>2</a>
+                <a href='/bbs/page/3'>3</a>
+                <a href='/bbs/page/4'>4</a>
+                <a href='/bbs/page/5'>5</a>
+                <a href='/bbs/page/6'>6</a>
+                <a href='/bbs/page/7'>7</a>
+                <a href='/bbs/page/8'>8</a>
+                <a href='/bbs/page/9'>9</a>
+                <a href='/bbs/page/10'>10</a>
+            </div>
+            <form name='selectform' method='post' action='/bbs/search'> 
+                <div id='selectfunc'>
+                    <select class='select' name='field' required>
+                        <option value='author'>작성자</option>
+                        <option value='title'>제목</option>
+                        <option value='content'>내용</option>
+                    </select>
+                    <input class='select' name='keyword' type='text' placeholder='검색어를 입력해주세요'>
+                    <button class='select' type='submit'>검색</button> 
+                </div>
+            </form>
+        </main>
     </body>
 </html>

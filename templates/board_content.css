@@ -1,0 +1,49 @@
+main {
+    margin: 0 auto;
+    width: fit-content;
+    padding: 10px;
+}
+h1 {
+    text-align: center;
+}
+table {
+    border-spacing: 0px 10px;
+    border-collapse: separate;
+    width: 700px;
+    text-align: left;
+}
+td{
+    padding: 7px 20px;
+    border: 1px solid rgb(197, 197, 197);
+    border-left: none;
+    border-right: none;
+}
+tr:nth-child(1) {
+    height: 60px;
+}
+tr:nth-child(1)>td:nth-child(2) {
+    font-size: 120%;
+    font-weight: bold;
+    text-align: left;
+}
+tr:nth-child(2)>td {
+    background-color: rgb(211, 225, 255);
+    border: none;
+}
+tr:nth-child(3)>td {
+    height: 400px;
+    vertical-align: text-top;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid rgb(197, 197, 197);
+    overflow:auto /* visible, hidden, scroll, auto */
+}
+button {
+    margin: 3px;
+}
+button#list {
+    float: left;
+}
+button#modify, button#delete {
+    float: right;
+}
