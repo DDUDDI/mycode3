@@ -9,7 +9,7 @@
             function delete_content() {
                 response = window.confirm('정말 삭제하시겠습니까?');
                 if (response) {
-                    location.href='/bbs/delete/{{row.num}}';
+                    location.href='/bbs/delete/{{rows.num}}';
                 }
                 else {
                     alert('취소했습니다.');
@@ -79,20 +79,21 @@
                         <col style='width: 25%;'>
                     </colgroup>
                     <tr>
-                        <td>{{row['num']}}</td>
-                        <td>{{row['title']}}</td>
-                        <td>작성자 : {{row['author']}}</td>
+                        <td>{{rows['num']}}</td>
+                        <td>{{rows['title']}}</td>
+                        <td>작성자 : {{rows['author']}}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">작성일 : {{row['wdate']}}</td>
-                        <td>조회수 : {{row['hitcnt']}}</td>
+                        <td colspan="2">작성일 : {{rows['wdate']}}</td>
+                        <td>조회수 : {{rows['hitcnt']}}</td>
                     </tr>
                     <tr>
                         <!--다운로드 경로가 보이는 방법
                         <td colspan='3'>첨부파일 : <a href="/static/attach/{{filename}}" download>{{filename if filename else ''}}</a></td>
                         -->
                         <!--보안을 위해 send_file를 사용하는 것이 좋음-->
-                        <td colspan='3'>첨부파일 : <a href='/bbs/download/{{filename}}'>{{filename}}</a></td>
+                        <td colspan='3'>첨부파일 : {% for d in filenamelist %}
+                            <a href="/bbs/download/{{d['fid']}}"> {{d['fname']}} </a>{% endfor %}</td>                       
                     </tr>
                     <tr>
                         <td colspan='3'>
@@ -101,14 +102,14 @@
                             {{ct}}<br>
                             {% endfor %}
                         -->
-                        {{row['content']|safe}}
+                        {{rows['content']|safe}}
                         <!--jinja2 safe: renders the value without applying escaping-->
                         </td>
                     </tr>
                 </table>
                 <button id='list' type='button' onclick="location.href='/bbs/page/1'">목록보기</button>
                 <button id='delete' type='button' onclick='delete_content();'>삭제</button>
-                <button id='modify' type='button' onclick="location.href='/bbs/edit/{{row.num}}'">수정</button>
+                <button id='modify' type='button' onclick="location.href='/bbs/edit/{{rows.num}}'">수정</button>
             </form>
         </main>
     </body>

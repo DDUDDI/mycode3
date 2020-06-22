@@ -11,6 +11,17 @@
                     return true;
                 else return false;
             }
+            var cnt=1;
+            function addfile() {
+                cnt ++;
+                name = 'file'+cnt;
+                $('#attach').append("<div><input type='file' name='"+name+"'></div>");
+            }
+            function removefile() {
+                if(cnt==1) return;
+                $('#attach div:last-child').remove();
+                cnt--;
+            }
         </script>
          <style>
             main {
@@ -78,7 +89,11 @@
                         <td><input type='text' id='author' name='author' placeholder='작성자를 입력하세요'></td> <!--session login을 위해 required 제거-->
                     </tr>
                     <tr>
-                        <td colspan='2'><input type='file' name='file1'></td>
+                        <td id='attach'><div><input type='file' name='file1'></div></td>
+                        <td>
+                            <button type='button' onclick='addfile();'>파일 추가</button>
+                            <button type='button' onclick='removefile();'>파일 제거</button>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan='2'><textarea id='content' name='content'></textarea></td>

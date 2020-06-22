@@ -36,12 +36,48 @@ def authenticate(usr):
 # 서버에서 파일이 업로드될 때 이미 그 이름을 가진 파일이 있다면 덮어쓰기 된다
 # 그러므로 그런 파일이 있는지 확인하여 나중에 업로드된 파일의 이름을 변경해서 저장해야 한다
 def file_handler(curs):
+    # 파일 여러개 받기 #
+    file_dic = request.files.to_dict() # form에서 받은 여러개의 file 정보를 dic 형태로 저장
+    upload_cnt = len(file_dic)
+    print('업로드 파일 수: ', upload_cnt)
+    save_cnt = 0
+    try:
+        curs.execute('select max(num) curnum from bbs;')
+        row = curs.fetchone()
+        curnum = row['curnum']
+        print('현재 글번호: ', curnum)
+        for key in file_dic:
+            filename = secure_filename(file_dic[key].filename) # 파일 이름 구하기
+            c_filename = filename
+            fpath = f'static/attach/{filename}'
+            b = path.exists(fpath)
+            if b:
+                c_filename = changefilename(filename)
+                fpath = f'static/attach/{c_filename}'
+            file_dic[key].save(fpath)
+            fsize = float(os.path.getsize('D:/Pythonweb/'+fpath))
+            fsize = fsize / 1024
+            sql = 'insert into attach (num, fname, fsize, cfname) values(%s, %s, %s, %s);'
+            nrow = curs.execute(sql, (curnum, filename, fsize, c_filename))
+            save_cnt += nrow
+            print('파일 정보 저장: ', save_cnt)
+        if save_cnt == upload_cnt:
+            return True
+        else:
+            return False
+    except os.error as e:
+        print(e)
+        return False
+
+    # 파일 한개 받기
+    '''
     f = request.files['file1']
-    filename = secure_filename(f.filename)
-    c_filename = changefilename(filename)
+    filename = secure_filename(f.filename) #### 코드가 중복되는 것 같은데 고치는 방법있는지 고민 ####
+    c_filename = filename
     fpath = f'static/attach/{filename}'
     b = path.exists(fpath) # 기존 파일이 존재하는지 확인하는 방법
     if b:
+        c_filename = changefilename(filename)
         fpath = f'static/attach/{c_filename}'
     f.save(fpath)
     try:
@@ -56,7 +92,8 @@ def file_handler(curs):
     except os.error as e:
         print(e)
         return False
-
+    '''
+    # 게시판 글번호 구하기 다른 코드
     # getnum = '''
     # select auto_increment
     # from information_schema.tables
@@ -71,16 +108,6 @@ def changefilename(filename):
     i = randint(1, 1000000)
     c_filename = f'{filenamesplit[0]}_{i}.{filenamesplit[1]}'
     return(c_filename)
-
-
-def getjointable(curs):
-    try:
-        sql = 'select * from bbs left outer join attach on bbs.num=attach.num;'
-        curs.execute(sql)
-        rows = curs.fetchall()
-        return rows
-    except os.error as e:
-        print(e)
 
 
 def getnickname(uid):
@@ -102,7 +129,6 @@ def getnickname(uid):
         conn.close()
 
 
-
 # /bbs/list으로 요청하면
 # 글번호, 글제목, 작성자, 작성일을 보여준다
 @app.route('/bbs/list')
@@ -110,12 +136,12 @@ def show_list():
     try:
         conn = pymysql.connect(host='localhost', user='root', password='tjoeun', db='test', charset='utf8')
         curs = conn.cursor(pymysql.cursors.DictCursor)
-        '''
-        sql = 'select num, title, author, wdate, hitcnt from bbs;'
-        curs.execute(sql)
+        sql1 = '''
+               select b.*, a.fid, a.fname, a.fsize from bbs b
+               left outer join attach a
+               on b.num=a.num group by num;'''
+        curs.execute(sql1)
         rows = curs.fetchall()
-        '''
-        rows = getjointable(curs)
         return render_template('board.html', rows=rows)
     except pymysql.MySQLError as e:
         print(e)
@@ -131,6 +157,7 @@ def show_content(num):
     try:
         conn = pymysql.connect(host='localhost', user='root', password='tjoeun', db='test', charset='utf8')
         curs = conn.cursor(pymysql.cursors.DictCursor)
+        ''' 파일 한 개 일 때 코드
         sql = 'select * from bbs where num=%s'
         num = int(num)
         curs.execute(sql, num)
@@ -138,16 +165,23 @@ def show_content(num):
         # textbox 내 엔터 출력할 수 있도록 하기
         # content_list = row['content'].split('\n') >> html에서 for 문으로 list출력하고 <br> 붙여줌
         row['content'] = row['content'].replace('\n', '<br/>') # 더 간단
-        curs.execute('update bbs set hitcnt=hitcnt+1 where num=%s;', num) # 조회수 올리기
-        conn.commit()
+        '''
 
-        # 파일명 출력 #
-        rows = getjointable(curs)
+        # 여러개 파일명 출력 #
+        sql = '''
+        select b.*, a.fid, a.fname, a.fsize from bbs b
+        left outer join attach a
+        on b.num=a.num
+        where b.num=%s'''
+        curs.execute(sql, num)
+        rows = curs.fetchall()
+        filenamelist = []
         for r in rows:
-            if r['num'] == num:
-                filename = r['fname']
-                c_filename = r['cfname']
-        return render_template('board_content.html', row=row, filename=filename, c_filename=c_filename)
+            filenamelist.append({'fid':r['fid'], 'fname':r['fname']})
+        rows[0]['content'] = rows[0]['content'].replace('\n', '<br/>')
+        curs.execute('update bbs set hitcnt=hitcnt+1 where num=%s;', num)  # 조회수 올리기
+        conn.commit()
+        return render_template('board_content.html', rows=rows[0], filenamelist=filenamelist)
     except pymysql.MySQLError as e:
         print(e)
     finally:
@@ -346,7 +380,6 @@ def view_form():
     return render_template('login_session.html')
 
 
-
 @app.route('/user/login', methods=['POST'])
 def userlogin():
     usr = request.form
@@ -391,18 +424,18 @@ def userlogout():
     return redirect('/bbs/page/1') # 로그아웃 상태에서도 접속 가능한 페이지로 이동
 
 
-
-@app.route('/bbs/download/<filename>')
-def download_attach(c_filename):
-    if c_filename:
+##############################################################################
+@app.route('/bbs/download/<int:fid>')
+def download_attach(fid):
+    if fid:
         try:
             conn = pymysql.connect(host='localhost', user='root', password='tjoeun', db='test', charset='utf8')
             curs = conn.cursor(pymysql.cursors.DictCursor)
-            sql = 'select * from attach where cfname=%s'
-            curs.execute(sql, c_filename)
+            sql = 'select * from attach where fid=%s'
+            curs.execute(sql, fid)
             row = curs.fetchone()
             filename = row['fname']
-            file_name = f'static/attach/{c_filename}'
+            file_name = f"static/attach/{row['cfname']}"
             return send_file(file_name,
                              mimetype=None,
                             attachment_filename=filename,
