@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 import os
 from os import path
 from random import *
+from boardclass import Board
+
 
 app = Flask(__name__)
 filepath = r'D:\PythonWeb\users.txt'
@@ -131,18 +133,35 @@ def getnickname(uid):
 
 # /bbs/list으로 요청하면
 # 글번호, 글제목, 작성자, 작성일을 보여준다
+# 한 개의 글에 속한 첨부파일 이름을 모두 표시하기
 @app.route('/bbs/list')
 def show_list():
     try:
         conn = pymysql.connect(host='localhost', user='root', password='tjoeun', db='test', charset='utf8')
         curs = conn.cursor(pymysql.cursors.DictCursor)
-        sql1 = '''
-               select b.*, a.fid, a.fname, a.fsize from bbs b
+        sql = '''
+               select b.*, a.fname from bbs b
                left outer join attach a
-               on b.num=a.num group by num;'''
-        curs.execute(sql1)
+               on b.num=a.num
+               order by b.num desc;'''
+        curs.execute(sql)
         rows = curs.fetchall()
-        return render_template('board.html', rows=rows)
+        boardnum = 0
+        boardlist = []
+        for r in rows:
+            if r['num'] != boardnum:
+                board = Board()
+                board.num = int(r['num'])
+                board.title = r['title']
+                board.author = r['author']
+                board.wdate = r['wdate']
+                board.hitcnt = int(r['hitcnt'])
+                board.fname.append(r['fname'] if r.get('fname') else '')
+                boardlist.append(board)
+            else:
+                boardlist[-1].fname.append(r['fname'] if r.get('fname') else '') # 생각하지 못한 코드
+            boardnum = r['num']
+        return render_template('board.html', boardlist=boardlist)
     except pymysql.MySQLError as e:
         print(e)
     finally:
@@ -354,21 +373,35 @@ def page(num):
         conn = pymysql.connect(host='localhost', user='root', password='tjoeun', db='test', charset='utf8')
         curs = conn.cursor(pymysql.cursors.DictCursor)
         curs.execute('set @RN:=0')
-        sql = ''' # join table로 수정
+        sql = '''
         select * from
         (
             select floor((RN-1)/5+1) page, t1.* from
             (
-                select @RN:=@RN+1 RN, b.*, a.fname, a.fsize from bbs b 
+                select @RN:=@RN+1 RN, b.*, a.fname from bbs b 
                 left outer join attach a on b.num=a.num
-                where (@RN:=0)=0
+                where (@RN:=0)=0 order by b.num desc
             ) t1
         ) t2
-        where page=%s;
-        '''
+        where page=%s;'''
         curs.execute(sql, num)
         rows = curs.fetchall()
-        return render_template('board.html', rows=rows)
+        boardnum = 0
+        boardlist = []
+        for r in rows:
+            if r['num'] != boardnum:
+                board = Board()
+                board.num = int(r['num'])
+                board.title = r['title']
+                board.author = r['author']
+                board.wdate = r['wdate']
+                board.hitcnt = int(r['hitcnt'])
+                board.fname.append(r['fname'] if r.get('fname') else '')
+                boardlist.append(board)
+            else:
+                boardlist[-1].fname.append(r['fname'] if r.get('fname') else '')  # 생각하지 못한 코드
+            boardnum = r['num']
+        return render_template('board.html', boardlist=boardlist)
     except pymysql.MySQLError as e:
         print(e)
     finally:

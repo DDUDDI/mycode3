@@ -127,16 +127,14 @@
                         <th>조회수</th>
                         <th>첨부파일</th>
                     </tr>
-                    {% for r in rows %}
+                    {% for b in boardlist %}
                     <tr>
-                        <td id='num'>{{r['num']}}</td>
-                        <td id='title'><a href="/bbs/read/{{r['num']}}">{{r['title']}}</a></td>
-                        <td id='author'>{{r['author']}}</td>
-                        <td id='wdate'>{{r['wdate']}}</td>
-                        <td id='hitcnt'>{{r['hitcnt']}}</td>
-                      
-                        
-                        <td id='fname'>{{r['fname']}}</td>
+                        <td id='num'>{{b.num}}</td>
+                        <td id='title'><a href="/bbs/read/{{b['num']}}">{{b.title}}</a></td>
+                        <td id='author'>{{b.author}}</td>
+                        <td id='wdate'>{{b.wdate}}</td>
+                        <td id='hitcnt'>{{b.hitcnt}}</td>
+                        <td id='fname'>{% for f in b.fname %}{{f}}<br>{% endfor %}</td>
                     </tr>
                     {% endfor %}
                 </table>
