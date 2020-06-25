@@ -192,13 +192,15 @@ def show_content(num):
         left outer join attach a
         on b.num=a.num
         where b.num=%s'''
-        curs.execute(sql, num)
+        # curs.execute(sql, num)
+        sql = 'call getBoardByNum(%s)'
+        curs.execute(sql, num) # stored procedure tests
         rows = curs.fetchall()
         filenamelist = []
         for r in rows:
             filenamelist.append({'fid':r['fid'], 'fname':r['fname']})
         rows[0]['content'] = rows[0]['content'].replace('\n', '<br/>')
-        curs.execute('update bbs set hitcnt=hitcnt+1 where num=%s;', num)  # 조회수 올리기
+        # curs.execute('update bbs set hitcnt=hitcnt+1 where num=%s;', num)  # 조회수 올리기
         conn.commit()
         return render_template('board_content.html', rows=rows[0], filenamelist=filenamelist)
     except pymysql.MySQLError as e:
